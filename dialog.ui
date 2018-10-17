@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>904</width>
+    <height>413</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FINTLabs::Stack Generator</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="4">
+        <widget class="QToolButton" name="deleteDirFileToolButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Delete file/directory</string>
+         </property>
+         <property name="text">
+          <string>delete dir/file</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="3">
+        <widget class="QToolButton" name="newDirectoryToolButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>New directory</string>
+         </property>
+         <property name="text">
+          <string>new dir</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QToolButton" name="setDirectoryToolButton">
+         <property name="toolTip">
+          <string>Set directory</string>
+         </property>
+         <property name="text">
+          <string>set dir</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="renameDirectoryToolButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Rename directory</string>
+         </property>
+         <property name="text">
+          <string>rename dir</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTreeView" name="treeView"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="messageLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+       <property name="midLineWidth">
+        <number>0</number>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="buddy">
+        <cstring>treeView</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Uri</string>
+       </property>
+       <property name="buddy">
+        <cstring>uriEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="repositoryEdit">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Stack</string>
+       </property>
+       <property name="buddy">
+        <cstring>stackEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="environmentCombo"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="portEdit"/>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="providerEdit"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="versionEdit"/>
+     </item>
+     <item row="8" column="0" colspan="2">
+      <widget class="QPushButton" name="saveButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="uriEdit"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="stackEdit"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Environment</string>
+       </property>
+       <property name="buddy">
+        <cstring>environmentCombo</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Version</string>
+       </property>
+       <property name="buddy">
+        <cstring>versionEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Port</string>
+       </property>
+       <property name="buddy">
+        <cstring>portEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Assets</string>
+       </property>
+       <property name="buddy">
+        <cstring>assetEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="assetEdit"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Provider</string>
+       </property>
+       <property name="buddy">
+        <cstring>providerEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0" colspan="2">
+      <widget class="QPushButton" name="generateButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Repository</string>
+       </property>
+       <property name="buddy">
+        <cstring>repositoryEdit</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>environmentCombo</tabstop>
+  <tabstop>stackEdit</tabstop>
+  <tabstop>uriEdit</tabstop>
+  <tabstop>repositoryEdit</tabstop>
+  <tabstop>versionEdit</tabstop>
+  <tabstop>portEdit</tabstop>
+  <tabstop>providerEdit</tabstop>
+  <tabstop>assetEdit</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>generateButton</tabstop>
+  <tabstop>treeView</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
