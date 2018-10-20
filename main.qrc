@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>fint.icns</file>
+  </qresource>
+</RCC>

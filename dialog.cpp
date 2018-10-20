@@ -1,6 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 #include "StackConfig.h"
+#include "StackFile.h"
 
 #include <QFileDialog>
 #include <QSettings>
@@ -19,9 +20,11 @@
 Dialog::Dialog(QWidget *parent) :
         QDialog(parent),
         ui(new Ui::Dialog) {
+
     ui->setupUi(this);
 
-    readSettings();
+    //readSettings();
+    currentDirectory = QDir::currentPath();
 
     this->setWindowTitle(currentDirectory);
 
@@ -59,9 +62,9 @@ Dialog::~Dialog() {
 void Dialog::writeSettings() {
     QSettings settings("FINTLabs", "Stack Generator");
 
-    settings.beginGroup("stack/path");
+    //settings.beginGroup("stack/path");
     settings.setValue("path", currentDirectory);
-    settings.endGroup();
+    //settings.endGroup();
 
 
 }
@@ -69,14 +72,13 @@ void Dialog::writeSettings() {
 void Dialog::readSettings() {
     QSettings settings("FINTLabs", "Stack Generator");
 
-    settings.beginGroup("stack/path");
-    currentDirectory = settings.value("path").toString();
-    settings.endGroup();
+    //settings.beginGroup("stack/path");
+    currentDirectory = settings.value("path", QDir::currentPath()).toString();
+    //settings.endGroup();
 }
 
 void Dialog::on_setDirectoryToolButton_clicked() {
-    QString
-            homeLocation = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+    QString homeLocation = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
     currentDirectory = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                          homeLocation,
                                                          QFileDialog::ShowDirsOnly
@@ -91,103 +93,35 @@ void Dialog::on_setDirectoryToolButton_clicked() {
 
 
 void Dialog::on_treeView_clicked(const QModelIndex &index) {
-    QFileInfo localFileInfo = dirModel->fileInfo(index);
-    QString
-            environment;
-    QString
-            resources;
-    QString
-            port;
-    QString
-            stack;
-    QString
-            provider;
-    QString
-            repository;
-    QString
-            uri;
-    QString
-            version;
-    YAML::Node config;
+
+
+    ui->messageLabel->setStyleSheet("");
+    ui->messageLabel->setText("");
 
     selectedFileInfo = dirModel->fileInfo(index);
 
-    QString
-            file = localFileInfo.absoluteFilePath();
-    //currentFile = localFileInfo.absoluteFilePath();
-
-
-    ui->newDirectoryToolButton->setDisabled(selectedFileInfo.isFile());
-    ui->renameDirectoryToolButton->setDisabled(selectedFileInfo.isFile());
+    ui->newDirectoryToolButton->setDisabled(!selectedFileInfo.isDir());
+    ui->renameDirectoryToolButton->setDisabled(!selectedFileInfo.isDir());
     ui->deleteDirFileToolButton->setDisabled(false);
-    ui->saveButton->setDisabled(false);
-    //ui->newConfigButton->setDisabled(false);
+    ui->generateButton->setDisabled(true);
 
-    if (localFileInfo.isDir()) {
-        this->setWindowTitle(localFileInfo.absoluteFilePath());
-        selectDirectory = localFileInfo.absoluteFilePath();
+
+    if (selectedFileInfo.isDir()) {
+        this->setWindowTitle(selectedFileInfo.absoluteFilePath());
+        selectDirectory = selectedFileInfo.absoluteFilePath();
         clearInputFields();
+        return;
     } else {
-        this->setWindowTitle(localFileInfo.canonicalPath());
-        selectDirectory = localFileInfo.canonicalPath();
+        this->setWindowTitle(selectedFileInfo.canonicalPath());
+        selectDirectory = selectedFileInfo.canonicalPath();
     }
 
-    if (localFileInfo.isDir()) {
-        return;
-    }
-
-    try {
-        config = YAML::LoadFile(file.toStdString());
-    }
-    catch (YAML::ParserException &e) {
-        ui->messageLabel->setText("Unable to parse yaml file.");
-        ui->saveButton->setDisabled(true);
-        return;
-    }
-
-
-    ui->messageLabel->setText("");
-
-    if (!StackConfig::isStackConfig(config)) {
-        ui->messageLabel->setText("This is not at FINTLabs stack config file!");
-        ui->saveButton->setDisabled(!StackConfig::isStackConfig(config));
+    config = StackConfig::load(ui, &selectedFileInfo);
+    if (config.IsNull()) {
         clearInputFields();
-        return;
     }
 
-    if (config["environment"]) {
-        environment = QString::fromStdString(config["environment"].as<std::string>());
-    }
-    if (config["resources"]) {
-        resources = QString::fromStdString(config["resources"].as<std::string>());
-    }
-    if (config["port"]) {
-        port = QString::fromStdString(config["port"].as<std::string>());
-    }
-    if (config["stack"]) {
-        stack = QString::fromStdString(config["stack"].as<std::string>());
-    }
-    if (config["provider"]) {
-        provider = QString::fromStdString(config["provider"].as<std::string>());
-    }
-    if (config["repository"]) {
-        repository = QString::fromStdString(config["repository"].as<std::string>());
-    }
-    if (config["uri"]) {
-        uri = QString::fromStdString(config["uri"].as<std::string>());
-    }
-    if (config["version"]) {
-        version = QString::fromStdString(config["version"].as<std::string>());
-    }
-
-    ui->environmentCombo->setCurrentText(environment);
-    ui->assetEdit->setText(resources);
-    ui->portEdit->setText(port);
-    ui->stackEdit->setText(stack);
-    ui->providerEdit->setText(provider);
-    ui->repositoryEdit->setText(repository);
-    ui->uriEdit->setText(uri);
-    ui->versionEdit->setText(version);
+    ui->generateButton->setDisabled(!StackConfig::isStackConfig(config));
 
 }
 
@@ -244,5 +178,28 @@ void Dialog::on_renameDirectoryToolButton_clicked() {
     if (ok && QDir(oldPath).exists() && !QDir(newPath).exists()) {
         QDir().rename(oldPath, newPath);
     }
+}
+
+void Dialog::on_generateButton_clicked() {
+
+
+    if (StackConfig::isStackConfig(config)) {
+
+        StackFile stackFile(config);
+
+        std::string stackTemplate = QString("%1%2%3").arg(currentDirectory, QDir::separator(), "fint-component-template.yml").toStdString();
+
+        QString result = stackFile.generate(stackTemplate);
+
+        if (result.isEmpty()) {
+            ui->messageLabel->setText("Application stack file is generated successfully!");
+            ui->messageLabel->setStyleSheet("QLabel { background-color : green; }");
+        } else {
+            ui->messageLabel->setText(result);
+            ui->messageLabel->setStyleSheet("QLabel { background-color : red; }");
+        }
+    }
+
+
 }
 

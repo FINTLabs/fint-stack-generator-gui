@@ -26,10 +26,14 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        dialog.cpp
+        dialog.cpp \
+        StackConfig.cpp
+        StackFile.cpp
 
 HEADERS += \
-        dialog.h
+        dialog.h \
+        StackConfig.h
+        StackFile.h
 
 FORMS += \
         dialog.ui
@@ -46,6 +50,3 @@ mac {
 QT_CONFIG -= no-pkg-config
 unix: CONFIG+=link_pkgconfig
 unix: PKGCONFIG+=yaml-cpp
-
-DISTFILES += \
-    test.yml

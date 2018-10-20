@@ -6,7 +6,7 @@
 #define FINT_STACK_GENERATOR_GUI_STACKCONFIG_H
 
 
-#include <fint_stack_generator_gui_autogen/include/ui_dialog.h>
+#include "ui_dialog.h"
 #include <yaml-cpp/yaml.h>
 #include <QFileInfo>
 
@@ -14,7 +14,6 @@ class StackConfig {
 
 public:
     StackConfig();
-
     virtual ~StackConfig();
 
 private:
@@ -25,7 +24,7 @@ public:
 
     static QString getYamlFile(const QFileInfo *fileInfo, const QString &environment, const QString &stack);
     static bool isStackConfig(YAML::Node &config);
-    static void get(Ui::Dialog *ui, QFileInfo *fileInfo);
+    static YAML::Node load(Ui::Dialog *ui, QFileInfo *fileInfo);
 };
 
 

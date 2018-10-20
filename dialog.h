@@ -26,6 +26,7 @@ private slots:
     void on_newDirectoryToolButton_clicked();
     void on_deleteDirFileToolButton_clicked();
     void on_renameDirectoryToolButton_clicked();
+    void on_generateButton_clicked();
 
 
 private:
@@ -35,6 +36,7 @@ private:
     //QString currentFile;
     QString selectDirectory;
     QFileInfo selectedFileInfo;
+    YAML::Node config;
     //bool isCleared = false;
     void writeSettings();
     void readSettings();

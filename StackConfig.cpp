@@ -50,8 +50,7 @@ QString StackConfig::getYamlFile(const QFileInfo *fileInfo, const QString &envir
     if (fileInfo->isDir()) {
         yamlFile = QString("%1%2%3-%4.yml").arg(fileInfo->absoluteFilePath(), QDir::separator(), stack,
                                                 environment);//currentFile;
-    }
-    else {
+    } else {
         yamlFile = fileInfo->absoluteFilePath();
     }
     return yamlFile;
@@ -73,6 +72,74 @@ bool StackConfig::isStackConfig(YAML::Node &config) {
            && config["version"];
 }
 
-void StackConfig::get(Ui::Dialog *ui, QFileInfo *fileInfo) {
+YAML::Node StackConfig::load(Ui::Dialog *ui, QFileInfo *fileInfo) {
 
+    QString environment;
+    QString resources;
+    QString port;
+    QString stack;
+    QString provider;
+    QString repository;
+    QString uri;
+    QString version;
+    YAML::Node config;
+
+
+    try {
+        config = YAML::LoadFile(fileInfo->absoluteFilePath().toStdString());
+    }
+    catch (YAML::ParserException &e) {
+        ui->messageLabel->setStyleSheet("QLabel { background-color : red; }");
+        ui->messageLabel->setText("Unable to parse yaml file.");
+        ui->saveButton->setDisabled(true);
+        return YAML::Node();
+    }
+
+
+    ui->messageLabel->setText("");
+
+    if (!StackConfig::isStackConfig(config)) {
+        ui->messageLabel->setStyleSheet("QLabel { background-color : yellow; }");
+        ui->messageLabel->setText("This is not at FINTLabs stack config file!");
+        ui->saveButton->setDisabled(true);
+        return YAML::Node();
+    }
+
+    ui->saveButton->setDisabled(false);
+
+    if (config["environment"]) {
+        environment = QString::fromStdString(config["environment"].as<std::string>());
+    }
+    if (config["resources"]) {
+        resources = QString::fromStdString(config["resources"].as<std::string>());
+    }
+    if (config["port"]) {
+        port = QString::fromStdString(config["port"].as<std::string>());
+    }
+    if (config["stack"]) {
+        stack = QString::fromStdString(config["stack"].as<std::string>());
+    }
+    if (config["provider"]) {
+        provider = QString::fromStdString(config["provider"].as<std::string>());
+    }
+    if (config["repository"]) {
+        repository = QString::fromStdString(config["repository"].as<std::string>());
+    }
+    if (config["uri"]) {
+        uri = QString::fromStdString(config["uri"].as<std::string>());
+    }
+    if (config["version"]) {
+        version = QString::fromStdString(config["version"].as<std::string>());
+    }
+
+    ui->environmentCombo->setCurrentText(environment);
+    ui->assetEdit->setText(resources);
+    ui->portEdit->setText(port);
+    ui->stackEdit->setText(stack);
+    ui->providerEdit->setText(provider);
+    ui->repositoryEdit->setText(repository);
+    ui->uriEdit->setText(uri);
+    ui->versionEdit->setText(version);
+
+    return config;
 }
