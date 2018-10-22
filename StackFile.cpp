@@ -1,7 +1,3 @@
-//
-// Created by Frode Sjovatsen on 17/10/2018.
-//
-
 #include "StackFile.h"
 #include <fstream>
 #include <QString>
@@ -11,7 +7,7 @@
 
 
 
-QString StackFile::generate(std::string &templateFile) {
+QString StackFile::generate(std::string templateFile, QString outputDirectory) {
 
     YAML::Node stackTemplate;
 
@@ -25,7 +21,13 @@ QString StackFile::generate(std::string &templateFile) {
     this->providerConfig(stackTemplate);
     this->consumerConfig(stackTemplate);
     this->healthAdapterConfig(stackTemplate);
-    std::ofstream fout("/Users/fsjovatsen/test.yml");
+
+    if (!QDir().exists(outputDirectory)) {
+        QDir().mkdir(outputDirectory);
+    }
+    std::string outputFile = QString("%1%2%3-%4.yml").arg(outputDirectory, QDir::separator(), this->stack(), this->environment()).toStdString();
+
+    std::ofstream fout(outputFile);
     fout << stackTemplate;
 
     return QString();

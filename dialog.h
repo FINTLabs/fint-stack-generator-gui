@@ -15,11 +15,11 @@ class Dialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit Dialog(QWidget *parent = nullptr);
+    explicit Dialog(QString currentDirectory, QWidget *parent = nullptr);
     ~Dialog();
 
 private slots:
-    void on_setDirectoryToolButton_clicked();
+    //void on_setDirectoryToolButton_clicked();
     void on_treeView_clicked(const QModelIndex &index);
     void on_saveButton_clicked();
     //void on_newConfigButton_clicked();
@@ -34,7 +34,7 @@ private:
     QFileSystemModel *dirModel;
     QString currentDirectory;
     //QString currentFile;
-    QString selectDirectory;
+    QString selectedDirectory;
     QFileInfo selectedFileInfo;
     YAML::Node config;
     //bool isCleared = false;

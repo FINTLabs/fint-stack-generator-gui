@@ -12,8 +12,9 @@ if (APPLE)
     set(ICON fint.icns)
 endif ()
 
+if (APPLE)
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES ${PROJECT_NAME}.app)
-
+endif()
 
 include_directories(.)
 
@@ -34,6 +35,8 @@ add_executable(fint_stack_generator_gui
         StackFile.h
         main.qrc
         ${ICON}
+        StackGeneratorConfig.cpp
+        StackGeneratorConfig.h
         )
 
 if (APPLE)

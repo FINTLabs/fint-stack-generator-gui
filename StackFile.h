@@ -16,7 +16,7 @@ public:
     StackFile() = default;
 
 public:
-    QString generate(std::string &templateFile);
+    QString generate(std::string templateFile, QString outputDirectory);
 
 private:
     YAML::Node config;
